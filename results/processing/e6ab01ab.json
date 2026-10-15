@@ -1,0 +1,99 @@
+{
+  "run_id": "e6ab01ab",
+  "status": "completed",
+  "created_at": "2026-03-22T06:25:44Z",
+  "completed_at": "2026-03-22T06:27:03Z",
+  "dataset": "abt-buy",
+  "dataset_entity_type": "product records",
+  "repr_label": "gemini-768",
+  "blocking_config": {
+    "representation": "gemini-768",
+    "repr_label": "gemini-768",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 10,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two {type_of_data} records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-mini",
+    "batching_mode": "one_to_many",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "counts": {
+    "n_records_a": 1081,
+    "n_records_b": 1092,
+    "n_ground_truth": 1097,
+    "candidate_pairs": 10810,
+    "predicted_matches": 1154,
+    "llm_requests": 2162
+  },
+  "blocking_metrics": {
+    "recall": 0.998177,
+    "reduction_ratio": 0.990842,
+    "precision": 0.101295,
+    "f1": 0.183925,
+    "true_positives": 1095,
+    "n_candidates": 10810,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 10.0
+  },
+  "metrics": {
+    "recall": 0.948952,
+    "reduction_ratio": 0.999022,
+    "precision": 0.90208,
+    "f1": 0.924922,
+    "true_positives": 1041,
+    "n_candidates": 1154,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 1.07
+  },
+  "usage": {
+    "input_tokens": 1031635,
+    "output_tokens": 856813,
+    "cached_input_tokens": 0,
+    "total_tokens": 1888448,
+    "avg_input_tokens_per_request": 477.17,
+    "avg_output_tokens_per_request": 396.31,
+    "avg_tokens_per_pair": 174.69
+  },
+  "cost": {
+    "input_cost_usd": 0.257909,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 1.713626,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 1.971535
+  },
+  "timing": {
+    "repr_time_s": 16.883,
+    "index_build_time_s": 0.0,
+    "query_time_s": 0.018,
+    "llm_time_s": 61.845,
+    "avg_request_time_s": 7.716,
+    "total_time_s": 78.841
+  },
+  "prompt_preview": {
+    "system_prompt": "You determine whether two product records records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nReturn only the structured decision output for the records you evaluate.",
+    "first_user_prompt": "Evaluate each candidate independently against the shared source record.\nReturn one decision for every candidate_id.\n\nSource Record:\nOmnimount Wall Speaker Mount - 20WLBK\nOmnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish\n$39.95\n\nCandidates:\n\nCandidate ID: 203324914\nOmniMount MWFS Moda Collection 2 Shelf Wall Mounted Furniture System - Espresso\nnan\nOMNIMOUNT SYSTEMS, INC\n$158.16\n\nCandidate ID: 204049534\nOmniMount Wishbone Large/X-Large Premium Cantilever Mount and Universal Adapter - UCL-XB\n200 lb\nOMNIMOUNT SYSTEMS, INC\n$292.92\n\nCandidate ID: 204222662\nOmniMount CMK-MINI Mini Wall Mounted Cable Management System\nnan\nOMNIMOUNT SYSTEMS, INC\nnan\n\nCandidate ID: 207390496\nOmniMount Ultra Low Profile ULPT-L Flat Panel Wall Mount - ULPT-L A\n200 lb - Anthracite\nOMNIMOUNT SYSTEMS, INC\n$278.95\n\nCandidate ID: 90106172\nOmniMount Universal Wall Speaker Mounting Kit - 20.0 WALL-B\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\n$24.34",
+    "first_response_text": "{\"decisions\":[{\"candidate_id\":\"203324914\",\"is_duplicate\":false,\"reason\":\"Different product type (2-shelf wall-mounted furniture system) and model; not a speaker mount.\"},{\"candidate_id\":\"204049534\",\"is_duplicate\":false,\"reason\":\"Different product (heavy-duty cantilever TV mount, 200 lb capacity) and model; not the small speaker mount.\"},{\"candidate_id\":\"204222662\",\"is_duplicate\":false,\"reason\":\"Different product (cable management system), not a speaker mount.\"},{\"candidate_id\":\"207390496\",\"is_duplicate\":false,\"reason\":\"Different product (flat panel TV wall mount, ULPT-L series) and capacity; not the speaker mount.\"},{\"candidate_id\":\"90106172\",\"is_duplicate\":true,\"reason\":\"Matches speaker mount description (20 lb capacity, stainless steel hardware, black finish, model/name corresponds to 20W series); likely the same product despite price difference.\"}]}"
+  },
+  "progress": {
+    "stage": "complete",
+    "completed_requests": 2162,
+    "total_requests": 2162,
+    "completed_pairs": 10810,
+    "total_pairs": 10810,
+    "candidate_pairs": 10810,
+    "candidate_recall": 0.998177
+  },
+  "precision": 0.90208,
+  "recall": 0.948952,
+  "f1": 0.924922,
+  "estimated_cost_usd": 1.971535,
+  "total_time_s": 78.841
+}

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="570" viewBox="0 0 980 570">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>text{font-family:Inter,system-ui,-apple-system,sans-serif;fill:#243244}.title{font-size:22px;font-weight:700}.axis{font-size:13px}.legend{font-size:12px}.note{font-size:11px;fill:#64748b}</style>
+<text x="92" y="34" class="title">WDC Small: recall versus retained candidates</text>
+<line x1="92.0" y1="70" x2="92.0" y2="492" stroke="#e5e7eb"/>
+<text x="92.0" y="516" text-anchor="middle" class="axis">0</text>
+<line x1="216.6" y1="70" x2="216.6" y2="492" stroke="#e5e7eb"/>
+<text x="216.6" y="516" text-anchor="middle" class="axis">10</text>
+<line x1="341.2" y1="70" x2="341.2" y2="492" stroke="#e5e7eb"/>
+<text x="341.2" y="516" text-anchor="middle" class="axis">21</text>
+<line x1="465.8" y1="70" x2="465.8" y2="492" stroke="#e5e7eb"/>
+<text x="465.8" y="516" text-anchor="middle" class="axis">31</text>
+<line x1="590.4" y1="70" x2="590.4" y2="492" stroke="#e5e7eb"/>
+<text x="590.4" y="516" text-anchor="middle" class="axis">42</text>
+<line x1="715.0" y1="70" x2="715.0" y2="492" stroke="#e5e7eb"/>
+<text x="715.0" y="516" text-anchor="middle" class="axis">52</text>
+<line x1="92" y1="492.0" x2="715" y2="492.0" stroke="#e5e7eb"/>
+<text x="80" y="496.0" text-anchor="end" class="axis">0.150</text>
+<line x1="92" y1="407.6" x2="715" y2="407.6" stroke="#e5e7eb"/>
+<text x="80" y="411.6" text-anchor="end" class="axis">0.320</text>
+<line x1="92" y1="323.2" x2="715" y2="323.2" stroke="#e5e7eb"/>
+<text x="80" y="327.2" text-anchor="end" class="axis">0.490</text>
+<line x1="92" y1="238.8" x2="715" y2="238.8" stroke="#e5e7eb"/>
+<text x="80" y="242.8" text-anchor="end" class="axis">0.660</text>
+<line x1="92" y1="154.4" x2="715" y2="154.4" stroke="#e5e7eb"/>
+<text x="80" y="158.4" text-anchor="end" class="axis">0.830</text>
+<line x1="92" y1="70.0" x2="715" y2="70.0" stroke="#e5e7eb"/>
+<text x="80" y="74.0" text-anchor="end" class="axis">1.000</text>
+<line x1="92" y1="492" x2="715" y2="492" stroke="#334155"/>
+<line x1="92" y1="70" x2="92" y2="492" stroke="#334155"/>
+<text x="403.5" y="550" text-anchor="middle" class="axis">Average candidates per query</text>
+<text x="22" y="281.0" text-anchor="middle" class="axis" transform="rotate(-90 22 281.0)">Blocking recall</text>
+<polyline points="110.0,467.2 110.6,464.2 118.2,452.3 121.0,450.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="110.0" cy="467.2" r="4" fill="#dc2626"><title>dropoff: x=1.50, y=0.2000</title></circle>
+<circle cx="110.6" cy="464.2" r="4" fill="#dc2626"><title>dropoff: x=1.55, y=0.2060</title></circle>
+<circle cx="118.2" cy="452.3" r="4" fill="#dc2626"><title>dropoff: x=2.19, y=0.2300</title></circle>
+<circle cx="121.0" cy="450.3" r="4" fill="#dc2626"><title>dropoff: x=2.42, y=0.2340</title></circle>
+<line x1="741" y1="86" x2="766" y2="86" stroke="#dc2626" stroke-width="3"/>
+<text x="775" y="90" class="legend">dropoff</text>
+<polyline points="165.9,226.9 188.9,204.0 217.9,184.2 243.4,172.3" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+<circle cx="165.9" cy="226.9" r="4" fill="#7c3aed"><title>knee: x=6.17, y=0.6840</title></circle>
+<circle cx="188.9" cy="204.0" r="4" fill="#7c3aed"><title>knee: x=8.09, y=0.7300</title></circle>
+<circle cx="217.9" cy="184.2" r="4" fill="#7c3aed"><title>knee: x=10.51, y=0.7700</title></circle>
+<circle cx="243.4" cy="172.3" r="4" fill="#7c3aed"><title>knee: x=12.64, y=0.7940</title></circle>
+<line x1="741" y1="120" x2="766" y2="120" stroke="#7c3aed" stroke-width="3"/>
+<text x="775" y="124" class="legend">knee</text>
+<polyline points="194.9,178.2 295.4,106.7 408.7,87.9 498.4,77.9" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="7 5"/>
+<circle cx="194.9" cy="178.2" r="4" fill="#2563eb"><title>reciprocal: x=8.59, y=0.7820</title></circle>
+<circle cx="295.4" cy="106.7" r="4" fill="#2563eb"><title>reciprocal: x=16.98, y=0.9260</title></circle>
+<circle cx="408.7" cy="87.9" r="4" fill="#2563eb"><title>reciprocal: x=26.43, y=0.9640</title></circle>
+<circle cx="498.4" cy="77.9" r="4" fill="#2563eb"><title>reciprocal: x=33.92, y=0.9840</title></circle>
+<line x1="741" y1="154" x2="766" y2="154" stroke="#2563eb" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="775" y="158" class="legend">reciprocal</text>
+<polyline points="109.7,434.4 129.6,308.3 151.2,245.8 169.3,216.0" fill="none" stroke="#d97706" stroke-width="2.5"/>
+<circle cx="109.7" cy="434.4" r="4" fill="#d97706"><title>stddev: x=1.48, y=0.2660</title></circle>
+<circle cx="129.6" cy="308.3" r="4" fill="#d97706"><title>stddev: x=3.14, y=0.5200</title></circle>
+<circle cx="151.2" cy="245.8" r="4" fill="#d97706"><title>stddev: x=4.94, y=0.6460</title></circle>
+<circle cx="169.3" cy="216.0" r="4" fill="#d97706"><title>stddev: x=6.45, y=0.7060</title></circle>
+<line x1="741" y1="188" x2="766" y2="188" stroke="#d97706" stroke-width="3"/>
+<text x="775" y="192" class="legend">stddev</text>
+<polyline points="247.8,141.5 403.5,91.8 559.2,79.9 691.0,75.0" fill="none" stroke="#059669" stroke-width="2.5"/>
+<circle cx="247.8" cy="141.5" r="4" fill="#059669"><title>top-k: x=13.00, y=0.8560</title></circle>
+<circle cx="403.5" cy="91.8" r="4" fill="#059669"><title>top-k: x=26.00, y=0.9560</title></circle>
+<circle cx="559.2" cy="79.9" r="4" fill="#059669"><title>top-k: x=39.00, y=0.9800</title></circle>
+<circle cx="691.0" cy="75.0" r="4" fill="#059669"><title>top-k: x=50.00, y=0.9900</title></circle>
+<line x1="741" y1="222" x2="766" y2="222" stroke="#059669" stroke-width="3"/>
+<text x="775" y="226" class="legend">top-k</text>
+</svg>

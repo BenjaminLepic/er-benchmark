@@ -1,0 +1,27 @@
+{
+  "run_id": "28d30958",
+  "status": "failed",
+  "created_at": "2026-04-10T15:12:47Z",
+  "completed_at": "2026-04-10T15:13:16Z",
+  "dataset": "abt-buy",
+  "blocking_config": {
+    "representation": "openai-small-1536",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 5,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-mini",
+    "batching_mode": "multi_pair",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "error": "name 'json' is not defined",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 553, in _run_processing_benchmark_background\n    result = run_processing_benchmark(run_id, config)\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 668, in run_processing_benchmark\n    execution_result = asyncio.run(\n        _execute_processing_requests_async(\n    ...<5 lines>...\n        )\n    )\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 195, in run\n    return runner.run(main)\n           ~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py\", line 725, in run_until_complete\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 592, in _execute_processing_requests_async\n    return await _execute_batches_async(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 506, in _execute_batches_async\n    result = await task\n             ^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py\", line 634, in _wait_for_one\n    return f.result() if resolve else f\n           ~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 490, in execute_one\n    payload, raw_response_text = parse_json_response(response)\n                                 ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_prompts.py\", line 185, in parse_json_response\n    return json.loads(text), text\n           ^^^^\nNameError: name 'json' is not defined. Did you forget to import 'json'?\n",
+  "is_binned": true,
+  "binned_at": "2026-04-10T15:17:42Z"
+}

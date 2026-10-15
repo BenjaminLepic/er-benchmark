@@ -1,0 +1,25 @@
+{
+  "state": {
+    "source_record": "acrobat professional 8 mac upsell standard-professional\nadobe\n273.0",
+    "candidates": [
+      {
+        "candidate_id": "pair_0",
+        "record": "adobe acrobat v8 .0 professional for mac\n405.99"
+      }
+    ]
+  },
+  "model": "jev-1.13.0",
+  "questions": {
+    "pair_0": {
+      "type": "noul",
+      "instructions": {
+        "question": "Do the two records in source_record and candidates entry with candidate_id pair_0 represent the same real-world entity?",
+        "guidance": "You determine whether two product records records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing."
+      },
+      "criteria": {
+        "true": "They are the same entity; ordinary typos, abbreviations, and formatting differences are allowed.",
+        "false": "They are different entities, especially when key identifiers or product identity conflict."
+      }
+    }
+  }
+}

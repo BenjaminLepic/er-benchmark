@@ -1,0 +1,7 @@
+run_id,model,batch_size,precision,recall,f1,cost_usd,total_time_s,comparison_note
+9b01d0c9,jev-1.13.0,10,0.947173,0.931632,0.939338,0.114906,14.072,TypeSafe-native shared-state fan-out
+c702da4f,grok-4-1-fast-reasoning,5,0.967526,0.923428,0.944963,0.365651,355.372,Best observed F1 among comparable Grok runs
+ab1eec1a,gpt-5.6-luna,5,0.926056,0.958979,0.942230,0.854085,85.031,Best observed F1 among comparable Luna runs
+0e929f03,gpt-5.4-mini,5,0.941828,0.929809,0.935780,3.331531,207.587,Comparable completed run
+6dd98a30,grok-4-1-fast-non-reasoning,5,0.925960,0.923428,0.924692,0.353498,28.235,Comparable completed run
+c2b85c40,deepseek-reasoner,5,0.972222,0.829535,0.895229,7.997172,346.549,Comparable completed run

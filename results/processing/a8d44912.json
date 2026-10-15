@@ -1,0 +1,99 @@
+{
+  "run_id": "a8d44912",
+  "status": "completed",
+  "created_at": "2026-03-22T06:35:13Z",
+  "completed_at": "2026-03-22T06:36:31Z",
+  "dataset": "abt-buy",
+  "dataset_entity_type": "product records",
+  "repr_label": "gemini-768",
+  "blocking_config": {
+    "representation": "gemini-768",
+    "repr_label": "gemini-768",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 10,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "Note that multiple records can be duplicative\n",
+    "model": "gpt-5-mini",
+    "batching_mode": "one_to_many",
+    "batch_size": 10,
+    "concurrency": 500
+  },
+  "counts": {
+    "n_records_a": 1081,
+    "n_records_b": 1092,
+    "n_ground_truth": 1097,
+    "candidate_pairs": 10810,
+    "predicted_matches": 1151,
+    "llm_requests": 1081
+  },
+  "blocking_metrics": {
+    "recall": 0.998177,
+    "reduction_ratio": 0.990842,
+    "precision": 0.101295,
+    "f1": 0.183925,
+    "true_positives": 1095,
+    "n_candidates": 10810,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 10.0
+  },
+  "metrics": {
+    "recall": 0.94804,
+    "reduction_ratio": 0.999025,
+    "precision": 0.903562,
+    "f1": 0.925267,
+    "true_positives": 1040,
+    "n_candidates": 1151,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 1.06
+  },
+  "usage": {
+    "input_tokens": 791015,
+    "output_tokens": 672137,
+    "cached_input_tokens": 0,
+    "total_tokens": 1463152,
+    "avg_input_tokens_per_request": 731.74,
+    "avg_output_tokens_per_request": 621.77,
+    "avg_tokens_per_pair": 135.35
+  },
+  "cost": {
+    "input_cost_usd": 0.197754,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 1.344274,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 1.542028
+  },
+  "timing": {
+    "repr_time_s": 16.822,
+    "index_build_time_s": 0.0,
+    "query_time_s": 0.018,
+    "llm_time_s": 60.625,
+    "avg_request_time_s": 12.406,
+    "total_time_s": 77.555
+  },
+  "prompt_preview": {
+    "system_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nAdditional user instructions (follow these when making your evaluation):\nNote that multiple records can be duplicative\n\nReturn only the structured decision output for the records you evaluate.",
+    "first_user_prompt": "Evaluate each candidate independently against the shared source record.\nReturn one decision for every candidate_id.\n\nSource Record:\nOmnimount Wall Speaker Mount - 20WLBK\nOmnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish\n$39.95\n\nCandidates:\n\nCandidate ID: 203324914\nOmniMount MWFS Moda Collection 2 Shelf Wall Mounted Furniture System - Espresso\nnan\nOMNIMOUNT SYSTEMS, INC\n$158.16\n\nCandidate ID: 204049534\nOmniMount Wishbone Large/X-Large Premium Cantilever Mount and Universal Adapter - UCL-XB\n200 lb\nOMNIMOUNT SYSTEMS, INC\n$292.92\n\nCandidate ID: 204222662\nOmniMount CMK-MINI Mini Wall Mounted Cable Management System\nnan\nOMNIMOUNT SYSTEMS, INC\nnan\n\nCandidate ID: 207390496\nOmniMount Ultra Low Profile ULPT-L Flat Panel Wall Mount - ULPT-L A\n200 lb - Anthracite\nOMNIMOUNT SYSTEMS, INC\n$278.95\n\nCandidate ID: 90106172\nOmniMount Universal Wall Speaker Mounting Kit - 20.0 WALL-B\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\n$24.34\n\nCandidate ID: 90106210\nOmniMount Stainless Steel Speaker Mount - 20.0 WALL-W\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\nnan\n\nCandidate ID: 90125772\nSanus Speaker Mount - WMS3B BLACK\nPlastic - 8 lb\nSanus\nnan\n\nCandidate ID: 90125786\nSanus Wall/Ceiling Speaker Mount - WMS3S SILVER\nPlastic - 8 lb\nSanus\nnan\n\nCandidate ID: 90140203\nOmniMount TV Top Shelf Mount\nOmniMount CCH1B Set-Top Center-Channel Shelf\nOMNIMOUNT SYSTEMS, INC\n$21.49\n\nCandidate ID: 90148258\nOmniMount TV Top Shelf Mount - CCH1P\nSteel - 30 lb\nOMNIMOUNT SYSTEMS, INC\nnan",
+    "first_response_text": "{\"decisions\":[{\"candidate_id\":\"203324914\",\"is_duplicate\":false,\"reason\":\"Different product (2-shelf wall furniture system), not a wall speaker mount.\"},{\"candidate_id\":\"204049534\",\"is_duplicate\":false,\"reason\":\"Different product type and capacity (premium cantilever TV mount, 200 lb), not the 20 lb speaker mount.\"},{\"candidate_id\":\"204222662\",\"is_duplicate\":false,\"reason\":\"Cable management system, not a speaker mount.\"},{\"candidate_id\":\"207390496\",\"is_duplicate\":false,\"reason\":\"Flat panel TV wall mount (different product and capacity), not a speaker mount.\"},{\"candidate_id\":\"90106172\",\"is_duplicate\":true,\"reason\":\"Matches Omnimount universal wall speaker mount 20 lb, black variant (same model family/weight capacity and materials).\"},{\"candidate_id\":\"90106210\",\"is_duplicate\":false,\"reason\":\"20.0 WALL-W is the white finish (different color/variant) from the black source SKU.\"},{\"candidate_id\":\"90125772\",\"is_duplicate\":false,\"reason\":\"Different brand (Sanus) and lower capacity; not same product.\"},{\"candidate_id\":\"90125786\",\"is_duplicate\":false,\"reason\":\"Different brand (Sanus) and lower capacity; not same product.\"},{\"candidate_id\":\"90140203\",\"is_duplicate\":false,\"reason\":\"TV top center-channel shelf, different product type than a wall speaker mount.\"},{\"candidate_id\":\"90148258\",\"is_duplicate\":false,\"reason\":\"TV top shelf mount (different product and capacity), not a speaker mount.\"}]}"
+  },
+  "progress": {
+    "stage": "complete",
+    "completed_requests": 1081,
+    "total_requests": 1081,
+    "completed_pairs": 10810,
+    "total_pairs": 10810,
+    "candidate_pairs": 10810,
+    "candidate_recall": 0.998177
+  },
+  "precision": 0.903562,
+  "recall": 0.94804,
+  "f1": 0.925267,
+  "estimated_cost_usd": 1.542028,
+  "total_time_s": 77.555
+}

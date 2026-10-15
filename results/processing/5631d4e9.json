@@ -1,0 +1,27 @@
+{
+  "run_id": "5631d4e9",
+  "status": "failed",
+  "created_at": "2026-03-22T06:00:47Z",
+  "completed_at": "2026-03-22T06:01:39Z",
+  "dataset": "abt-buy",
+  "blocking_config": {
+    "representation": "gemini-768",
+    "index_type": "faiss_flat",
+    "retrieval": "topk",
+    "k": 4,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "labels_multiline",
+    "base_prompt": "You determine whether two product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-nano",
+    "batching_mode": "pairwise",
+    "batch_size": 5,
+    "concurrency": 504
+  },
+  "error": "_update_run() got multiple values for argument 'run_id'",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 536, in _run_processing_benchmark_background\n    _update_run(run_id, **result)\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nTypeError: _update_run() got multiple values for argument 'run_id'\n",
+  "is_binned": true,
+  "binned_at": "2026-04-10T15:17:47Z"
+}

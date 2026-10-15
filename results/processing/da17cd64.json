@@ -1,0 +1,99 @@
+{
+  "run_id": "da17cd64",
+  "status": "completed",
+  "created_at": "2026-03-22T06:23:42Z",
+  "completed_at": "2026-03-22T06:24:09Z",
+  "dataset": "abt-buy",
+  "dataset_entity_type": "product records",
+  "repr_label": "openai-small-1536",
+  "blocking_config": {
+    "representation": "openai-small-1536",
+    "repr_label": "openai-small-1536",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 3,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-mini",
+    "batching_mode": "multi_pair",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "counts": {
+    "n_records_a": 1081,
+    "n_records_b": 1092,
+    "n_ground_truth": 1097,
+    "candidate_pairs": 3243,
+    "predicted_matches": 1062,
+    "llm_requests": 649
+  },
+  "blocking_metrics": {
+    "recall": 0.943482,
+    "reduction_ratio": 0.997253,
+    "precision": 0.319149,
+    "f1": 0.476959,
+    "true_positives": 1035,
+    "n_candidates": 3243,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 3.0
+  },
+  "metrics": {
+    "recall": 0.902461,
+    "reduction_ratio": 0.9991,
+    "precision": 0.932203,
+    "f1": 0.917091,
+    "true_positives": 990,
+    "n_candidates": 1062,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 0.98
+  },
+  "usage": {
+    "input_tokens": 542795,
+    "output_tokens": 296527,
+    "cached_input_tokens": 0,
+    "total_tokens": 839322,
+    "avg_input_tokens_per_request": 836.36,
+    "avg_output_tokens_per_request": 456.9,
+    "avg_tokens_per_pair": 258.81
+  },
+  "cost": {
+    "input_cost_usd": 0.135699,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 0.593054,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 0.728753
+  },
+  "timing": {
+    "repr_time_s": 7.344,
+    "index_build_time_s": 0.0,
+    "query_time_s": 0.02,
+    "llm_time_s": 19.744,
+    "avg_request_time_s": 8.48,
+    "total_time_s": 27.192
+  },
+  "prompt_preview": {
+    "system_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nReturn only the structured decision output for the records you evaluate.",
+    "first_user_prompt": "Evaluate each candidate pair independently.\nReturn one decision for every pair_id.\n\nPair ID: pair_0\nRecord A:\nOmnimount Wall Speaker Mount - 20WLBK\nOmnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish\n$39.95\nRecord B:\nOmniMount Universal Wall Speaker Mounting Kit - 20.0 WALL-B\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\n$24.34\n\nPair ID: pair_1\nRecord A:\nOmnimount Wall Speaker Mount - 20WLBK\nOmnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish\n$39.95\nRecord B:\nOmniMount Stainless Steel Speaker Mount - 20.0 WALL-W\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\nnan\n\nPair ID: pair_2\nRecord A:\nOmnimount Wall Speaker Mount - 20WLBK\nOmnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish\n$39.95\nRecord B:\nSanus Wall/Ceiling Speaker Mount - WMS3S SILVER\nPlastic - 8 lb\nSanus\nnan\n\nPair ID: pair_3\nRecord A:\nOmnimount Wall Speaker Mount - 20WLWH\nOmnimount Wall Speaker Mount - 20WLWH/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold as each / White Finish (Photo Showing Black)\n$40.00\nRecord B:\nOmniMount Universal Wall Speaker Mounting Kit - 20.0 WALL-B\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\n$24.34\n\nPair ID: pair_4\nRecord A:\nOmnimount Wall Speaker Mount - 20WLWH\nOmnimount Wall Speaker Mount - 20WLWH/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold as each / White Finish (Photo Showing Black)\n$40.00\nRecord B:\nOmniMount Stainless Steel Speaker Mount - 20.0 WALL-W\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\nnan",
+    "first_response_text": "{\n  \"decisions\": [\n    {\n      \"pair_id\": \"pair_0\",\n      \"is_duplicate\": true,\n      \"reason\": \"Same brand (OmniMount), same 20 lb capacity and stainless-steel construction; model names correspond to the black variant (20WLBK vs WALL-B) \u2014 likely same product.\"\n    },\n    {\n      \"pair_id\": \"pair_1\",\n      \"is_duplicate\": false,\n      \"reason\": \"Same family but different color SKUs: A is black (20WLBK) while B is the white variant (WALL-W) \u2014 different SKU/variant.\"\n    },\n    {\n      \"pair_id\": \"pair_2\",\n      \"is_duplicate\": false,\n      \"reason\": \"Different brands (OmniMount vs Sanus) and different specs (20 lb vs 8 lb) \u2014 not the same product.\"\n    },\n    {\n      \"pair_id\": \"pair_3\",\n      \"is_duplicate\": false,\n      \"reason\": \"Different color/variant: A is white model (20WLWH) while B is the black variant (WALL-B) \u2014 different SKU/variant.\"\n    },\n    {\n      \"pair_id\": \"pair_4\",\n      \"is_duplicate\": true,\n      \"reason\": \"Both are OmniMount 20 lb wall speaker mounts in the white variant (20WLWH vs WALL-W) with matching specs \u2014 likely the same product.\"\n    }\n  ]\n}"
+  },
+  "progress": {
+    "stage": "complete",
+    "completed_requests": 649,
+    "total_requests": 649,
+    "completed_pairs": 3243,
+    "total_pairs": 3243,
+    "candidate_pairs": 3243,
+    "candidate_recall": 0.943482
+  },
+  "precision": 0.932203,
+  "recall": 0.902461,
+  "f1": 0.917091,
+  "estimated_cost_usd": 0.728753,
+  "total_time_s": 27.192
+}

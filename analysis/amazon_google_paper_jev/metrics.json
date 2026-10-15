@@ -1,0 +1,49 @@
+{
+  "model": "jev-1.13.0",
+  "threshold": 0.5,
+  "demonstrations": 0,
+  "serialization": "values_multiline",
+  "batching": "one_to_many",
+  "batch_size": 10,
+  "concurrency": 5,
+  "system_prompt": "You determine whether two product records records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nReturn only the structured decision output for the records you evaluate.",
+  "dataset_url": "https://fm-data-tasks.s3.us-west-1.amazonaws.com/datasets.tar.gz",
+  "file_sha256": {
+    "tableA.csv": "04a797511d83af9e27469778081c50397857b199d49e2f83c119390f14301947",
+    "tableB.csv": "00c0d19c0dcd014b00d6d341e15e2b3b3caa616b4f6d710d0c9cd2dfc3f4717f",
+    "test.csv": "09e376c0c5391bd4a6c6d8efde148c994441b6043ef6b7f9eab2a8772a6fb362"
+  },
+  "full_test": {
+    "precision": 0.540741,
+    "recall": 0.935897,
+    "f1": 0.685446,
+    "pairs": 2293,
+    "positives": 234,
+    "true_positives": 219,
+    "false_positives": 186,
+    "false_negatives": 15,
+    "true_negatives": 1873
+  },
+  "first_200": {
+    "precision": 0.583333,
+    "recall": 0.954545,
+    "f1": 0.724138,
+    "pairs": 200,
+    "positives": 22,
+    "true_positives": 21,
+    "false_positives": 15,
+    "false_negatives": 1,
+    "true_negatives": 163
+  },
+  "seconds": 26.191,
+  "requests": 793,
+  "input_tokens": 671094,
+  "cost": {
+    "input_cost_usd": 0.028186,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 0.0,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 0.028186
+  },
+  "comparison_note": "First 200 test rows follow released script selection; paper Table 1 subset correspondence is not independently verified. Jev uses native typed decisions, the existing benchmark prompt, and no demonstrations; this is not a replication of GPT-3 prompting."
+}

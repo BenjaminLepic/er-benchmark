@@ -1,0 +1,99 @@
+{
+  "run_id": "8d5aa80a",
+  "status": "completed",
+  "created_at": "2026-03-22T06:12:36Z",
+  "completed_at": "2026-03-22T06:13:08Z",
+  "dataset": "abt-buy",
+  "dataset_entity_type": "product records",
+  "repr_label": "openai-small-1536",
+  "blocking_config": {
+    "representation": "openai-small-1536",
+    "repr_label": "openai-small-1536",
+    "index_type": "faiss_flat",
+    "retrieval": "topk",
+    "k": 3,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "labels_inline",
+    "base_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-mini",
+    "batching_mode": "pairwise",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "counts": {
+    "n_records_a": 1081,
+    "n_records_b": 1092,
+    "n_ground_truth": 1097,
+    "candidate_pairs": 3243,
+    "predicted_matches": 1068,
+    "llm_requests": 3243
+  },
+  "blocking_metrics": {
+    "recall": 0.943482,
+    "reduction_ratio": 0.997253,
+    "precision": 0.319149,
+    "f1": 0.476959,
+    "true_positives": 1035,
+    "n_candidates": 3243,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 3.0
+  },
+  "metrics": {
+    "recall": 0.899727,
+    "reduction_ratio": 0.999095,
+    "precision": 0.924157,
+    "f1": 0.911778,
+    "true_positives": 987,
+    "n_candidates": 1068,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 0.99
+  },
+  "usage": {
+    "input_tokens": 834046,
+    "output_tokens": 524736,
+    "cached_input_tokens": 0,
+    "total_tokens": 1358782,
+    "avg_input_tokens_per_request": 257.18,
+    "avg_output_tokens_per_request": 161.81,
+    "avg_tokens_per_pair": 418.99
+  },
+  "cost": {
+    "input_cost_usd": 0.208511,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 1.049472,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 1.257983
+  },
+  "timing": {
+    "repr_time_s": 7.563,
+    "index_build_time_s": 0.001,
+    "query_time_s": 0.004,
+    "llm_time_s": 24.045,
+    "avg_request_time_s": 2.831,
+    "total_time_s": 31.708
+  },
+  "prompt_preview": {
+    "system_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nReturn only the structured decision output for the records you evaluate.",
+    "first_user_prompt": "Compare these potential duplicate records.\n\nRecord A:\nname: Omnimount Wall Speaker Mount - 20WLBK, description: Omnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish, price: $39.95\n\nRecord B:\nname: OmniMount Universal Wall Speaker Mounting Kit - 20.0 WALL-B, description: Stainless Steel - 20 lb, manufacturer: OMNIMOUNT SYSTEMS, INC, price: $24.34\n",
+    "first_response_text": "{\"is_duplicate\": true, \"reason\": \"Both are OmniMount wall speaker mounts for up to 20 lb (20WLBK / 20 WALL-B), mention stainless steel hardware and black finish; naming and manufacturer match despite price difference, so they represent the same product.\"}"
+  },
+  "progress": {
+    "stage": "complete",
+    "completed_requests": 3243,
+    "total_requests": 3243,
+    "completed_pairs": 3243,
+    "total_pairs": 3243,
+    "candidate_pairs": 3243,
+    "candidate_recall": 0.943482
+  },
+  "precision": 0.924157,
+  "recall": 0.899727,
+  "f1": 0.911778,
+  "estimated_cost_usd": 1.257983,
+  "total_time_s": 31.708
+}

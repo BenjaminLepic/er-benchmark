@@ -1,0 +1,27 @@
+{
+  "run_id": "1552d957",
+  "status": "failed",
+  "created_at": "2026-03-22T06:41:22Z",
+  "completed_at": "2026-03-22T06:42:11Z",
+  "dataset": "abt-buy",
+  "blocking_config": {
+    "representation": "gemini-768",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 10,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_inline",
+    "base_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-nano",
+    "batching_mode": "one_to_many",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "error": "Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 534, in _run_processing_benchmark_background\n    \"total_pairs\": total_pairs,\n     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 638, in run_processing_benchmark\n    \n    \n    ...<8 lines>...\n    request_bundles = []\n    ^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 195, in run\n    return runner.run(main)\n           ~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py\", line 725, in run_until_complete\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 487, in _execute_batches_async\n    request_started = time.perf_counter()\n         ^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py\", line 634, in _wait_for_one\n    return f.result() if resolve else f\n           ~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 469, in execute_one\n    return predicted_pairs\n                   ^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 285, in _call_with_retries_async\n    raise last_error\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 272, in _call_with_retries_async\n    return await client.responses.create(**request_kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/venv/lib/python3.13/site-packages/openai/resources/responses/responses.py\", line 2507, in create\n    return await self._post(\n           ^^^^^^^^^^^^^^^^^\n    ...<43 lines>...\n    )\n    ^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/venv/lib/python3.13/site-packages/openai/_base_client.py\", line 1884, in post\n    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/venv/lib/python3.13/site-packages/openai/_base_client.py\", line 1669, in request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}\n",
+  "is_binned": true,
+  "binned_at": "2026-04-10T15:17:56Z"
+}

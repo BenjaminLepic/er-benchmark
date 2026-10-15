@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% block title %}Results — ER Blocking Benchmark{% endblock %}
+{% block content %}
+<h1>Experiment Results</h1>
+
+{% if results %}
+<section class="card">
+    <div class="actions">
+        <form method="POST" action="{{ url_for('clear_results') }}" style="display:inline">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Clear all results?')">Clear All</button>
+        </form>
+    </div>
+
+    <div class="filters">
+        <div class="filter-group">
+            <label>Dataset</label>
+            <select id="filter-dataset" multiple></select>
+        </div>
+        <div class="filter-group">
+            <label>Representation</label>
+            <select id="filter-repr" multiple></select>
+        </div>
+        <div class="filter-group">
+            <label>Serialization</label>
+            <select id="filter-serialization" multiple></select>
+        </div>
+        <div class="filter-group">
+            <label>Index</label>
+            <select id="filter-index" multiple></select>
+        </div>
+        <div class="filter-group">
+            <label>Retrieval</label>
+            <select id="filter-retrieval" multiple></select>
+        </div>
+        <div class="filter-group">
+            <label>k</label>
+            <select id="filter-k" multiple></select>
+        </div>
+        <div class="filter-group">
+            <label>Threshold</label>
+            <select id="filter-threshold" multiple></select>
+        </div>
+    </div>
+
+    <table id="results-table">
+        <thead>
+            <tr>
+                <th>Dataset</th>
+                <th>Representation</th>
+                <th>Serialization</th>
+                <th>Index</th>
+                <th>Retrieval</th>
+                <th>k</th>
+                <th>Avg k</th>
+                <th>Threshold</th>
+                <th>Recall</th>
+                <th>Reduction Ratio</th>
+                <th>Precision</th>
+                <th>F1</th>
+                <th>Candidates</th>
+                <th>Repr Time</th>
+                <th>Index Build</th>
+                <th>Query Time</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in results|sort(attribute='recall', reverse=True) %}
+            <tr data-dataset="{{ r.dataset }}"
+                data-repr="{{ r.repr_label or r.representation }}"
+                data-serialization="{{ r.get('serialization_mode', 'values_space') }}"
+                data-index="{{ r.index_type }}"
+                data-retrieval="{{ r.retrieval }}"
+                data-k="{{ r.k if r.k is not none else '' }}"
+                data-threshold="{{ r.threshold if r.threshold is not none else '' }}">
+                <td>{{ r.dataset }}</td>
+                <td>{{ r.repr_label or r.representation }}</td>
+                <td>{{ r.get('serialization_mode', 'values_space') }}</td>
+                <td>{{ r.index_type }}</td>
+                <td>{{ r.retrieval }}</td>
+                <td>{{ r.k if r.k is not none else '—' }}</td>
+                <td>{{ r.get('avg_k', '—') }}</td>
+                <td>{{ r.threshold if r.threshold is not none else '—' }}</td>
+                <td class="{% if r.recall >= 0.95 %}good{% elif r.recall >= 0.8 %}ok{% else %}bad{% endif %}">
+                    {{ "%.4f"|format(r.recall) }}
+                </td>
+                <td>{{ "%.4f"|format(r.reduction_ratio) }}</td>
+                <td>{{ "%.4f"|format(r.precision) }}</td>
+                <td>{{ "%.4f"|format(r.f1) }}</td>
+                <td>{{ r.n_candidates }}</td>
+                <td>{{ "%.1f"|format(r.repr_time_s) }}s</td>
+                <td>{{ "%.3f"|format(r.index_build_time_s) }}s</td>
+                <td>{{ "%.3f"|format(r.query_time_s) }}s</td>
+                <td><a href="{{ url_for('detail', experiment_id=r.experiment_id) }}">detail</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="filter-count" id="filter-count"></p>
+</section>
+
+<section class="card">
+    <h2>Recall vs k</h2>
+    <canvas id="recall-chart" height="120"></canvas>
+    <p class="chart-hint">Drag to zoom into a region. Double-click to reset.</p>
+</section>
+
+<script>
+(function() {
+    const results = {{ results|tojson }};
+    const rows = document.querySelectorAll('#results-table tbody tr');
+
+    // Populate filter dropdowns from data
+    const fields = {
+        'filter-dataset': 'dataset',
+        'filter-repr': 'repr',
+        'filter-serialization': 'serialization',
+        'filter-index': 'index',
+        'filter-retrieval': 'retrieval',
+        'filter-k': 'k',
+        'filter-threshold': 'threshold',
+    };
+    Object.entries(fields).forEach(([selectId, attr]) => {
+        const sel = document.getElementById(selectId);
+        const vals = new Set();
+        rows.forEach(r => {
+            const v = r.dataset[attr];
+            if (v !== '') vals.add(v);
+        });
+        [...vals].sort().forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v;
+            opt.textContent = v;
+            sel.appendChild(opt);
+        });
+    });
+
+    function getSelected(selectId) {
+        const sel = document.getElementById(selectId);
+        return [...sel.selectedOptions].map(o => o.value);
+    }
+
+    function applyFilters() {
+        const filters = {};
+        Object.entries(fields).forEach(([selectId, attr]) => {
+            filters[attr] = getSelected(selectId);
+        });
+
+        let visible = 0;
+        const filteredResults = [];
+        rows.forEach((row) => {
+            let show = true;
+            Object.entries(filters).forEach(([attr, selected]) => {
+                if (selected.length > 0 && !selected.includes(row.dataset[attr])) show = false;
+            });
+            row.style.display = show ? '' : 'none';
+            if (show) {
+                visible++;
+                const rid = row.querySelector('a[href]').getAttribute('href').split('/').pop();
+                const r = results.find(r => r.experiment_id === rid);
+                if (r) filteredResults.push(r);
+            }
+        });
+
+        document.getElementById('filter-count').textContent =
+            visible + ' of ' + rows.length + ' experiments shown';
+
+        updateChart(filteredResults);
+    }
+
+    Object.keys(fields).forEach(id => {
+        document.getElementById(id).addEventListener('change', applyFilters);
+    });
+
+    // Chart
+    const colors = [
+        '#e6194b', '#3cb44b', '#4363d8', '#f58231', '#911eb4',
+        '#42d4f4', '#f032e6', '#bfef45', '#fabed4', '#469990',
+        '#dcbeff', '#9A6324', '#800000', '#aaffc3', '#808000',
+    ];
+
+    let chart = null;
+
+    function buildChartData(data) {
+        const groups = {};
+        data.forEach(r => {
+            // Use avg_k as x for adaptive strategies, k for fixed
+            const xVal = r.avg_k || r.k;
+            if (xVal === null || xVal === undefined) return;
+            const serialization = r.serialization_mode || 'values_space';
+            const key = (r.repr_label || r.representation) + ' / ' + serialization + ' / ' + r.index_type + ' / ' + r.retrieval + ' (' + r.dataset + ')';
+            if (!groups[key]) groups[key] = [];
+            groups[key].push({x: xVal, y: r.recall});
+        });
+        return Object.entries(groups).map(([label, points], i) => {
+            // Dedup points with same x value per series (keep last)
+            const byX = {};
+            points.forEach(p => { byX[p.x] = p; });
+            const deduped = Object.values(byX).sort((a, b) => a.x - b.x);
+            return {
+                label,
+                data: deduped,
+                borderColor: colors[i % colors.length],
+                fill: false,
+                tension: 0.2,
+            };
+        });
+    }
+
+    function updateChart(data) {
+        const datasets = buildChartData(data);
+        if (chart) {
+            chart.data.datasets = datasets;
+            chart.resetZoom();
+            chart.update();
+        }
+    }
+
+    chart = new Chart(document.getElementById('recall-chart'), {
+        type: 'line',
+        data: { datasets: buildChartData(results) },
+        options: {
+            scales: {
+                x: { type: 'linear', title: { display: true, text: 'k (avg candidates/record for adaptive)' } },
+                y: { title: { display: true, text: 'Recall' }, min: 0, max: 1 },
+            },
+            plugins: {
+                legend: { position: 'right' },
+                zoom: {
+                    zoom: {
+                        drag: {
+                            enabled: true,
+                            backgroundColor: 'rgba(26,26,46,0.15)',
+                            borderColor: 'rgba(26,26,46,0.4)',
+                            borderWidth: 1,
+                        },
+                        mode: 'xy',
+                    },
+                },
+            },
+        },
+        plugins: [{
+            id: 'resetZoomOnDoubleClick',
+            beforeInit(chart) {
+                chart.canvas.addEventListener('dblclick', () => {
+                    chart.resetZoom();
+                });
+            }
+        }],
+    });
+
+    applyFilters();
+})();
+</script>
+{% else %}
+<p>No results yet. <a href="{{ url_for('index') }}">Run some experiments</a>.</p>
+{% endif %}
+{% endblock %}

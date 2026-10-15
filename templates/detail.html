@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Experiment {{ result.experiment_id }} — ER Blocking Benchmark{% endblock %}
+{% block content %}
+<h1>Experiment {{ result.experiment_id }}</h1>
+<a href="{{ url_for('results_page') }}">&larr; Back to results</a>
+
+<section class="card">
+    <h2>Configuration</h2>
+    <dl class="detail-grid">
+        <dt>Dataset</dt><dd>{{ result.dataset }}</dd>
+        <dt>Representation</dt><dd>{{ result.repr_label or result.representation }}</dd>
+        <dt>Serialization</dt><dd>{{ result.get('serialization_mode', 'values_space') }}</dd>
+        <dt>Index / Vector Store</dt><dd>{{ result.index_type }}</dd>
+        <dt>Retrieval Strategy</dt><dd>{{ result.retrieval }}</dd>
+        <dt>k</dt><dd>{{ result.k if result.k is not none else '—' }}</dd>
+        <dt>Threshold</dt><dd>{{ result.threshold if result.threshold is not none else '—' }}</dd>
+        <dt>Records (A)</dt><dd>{{ result.n_records_a }}</dd>
+        <dt>Records (B)</dt><dd>{{ result.n_records_b }}</dd>
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Metrics</h2>
+    <dl class="detail-grid">
+        <dt>Recall (Pairs Completeness)</dt>
+        <dd class="{% if result.recall >= 0.95 %}good{% elif result.recall >= 0.8 %}ok{% else %}bad{% endif %}">
+            {{ "%.6f"|format(result.recall) }}
+        </dd>
+        <dt>Reduction Ratio</dt><dd>{{ "%.6f"|format(result.reduction_ratio) }}</dd>
+        <dt>Precision</dt><dd>{{ "%.6f"|format(result.precision) }}</dd>
+        <dt>F1</dt><dd>{{ "%.6f"|format(result.f1) }}</dd>
+        <dt>True Positives</dt><dd>{{ result.true_positives }} / {{ result.n_ground_truth }}</dd>
+        <dt>Candidate Pairs</dt><dd>{{ result.n_candidates }}</dd>
+        <dt>Total Possible Pairs</dt><dd>{{ result.total_possible_pairs }}</dd>
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Timing</h2>
+    <dl class="detail-grid">
+        <dt>Representation Time</dt><dd>{{ "%.3f"|format(result.repr_time_s) }}s</dd>
+        <dt>Index Build Time</dt><dd>{{ "%.3f"|format(result.index_build_time_s) }}s</dd>
+        <dt>Query Time</dt><dd>{{ "%.3f"|format(result.query_time_s) }}s</dd>
+        <dt>Total Time</dt><dd>{{ "%.3f"|format(result.total_time_s) }}s</dd>
+    </dl>
+</section>
+{% endblock %}

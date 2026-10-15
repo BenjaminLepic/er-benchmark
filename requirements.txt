@@ -1,0 +1,10 @@
+flask
+pandas
+numpy
+scikit-learn
+sentence-transformers
+faiss-cpu
+openai
+httpx
+python-dotenv
+psycopg2

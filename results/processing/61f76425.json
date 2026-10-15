@@ -1,0 +1,27 @@
+{
+  "run_id": "61f76425",
+  "status": "failed",
+  "is_binned": true,
+  "created_at": "2026-04-11T20:51:41Z",
+  "completed_at": "2026-04-11T20:51:50Z",
+  "dataset": "abt-buy",
+  "blocking_config": {
+    "representation": "openai-small-1536",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 10,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two {type_of_data} records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "deepseek-reasoner",
+    "batching_mode": "one_to_many",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "error": "DEEPSEEK_API_KEY is required to run DeepSeek processing benchmarks",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 670, in _run_processing_benchmark_background\n    result = run_processing_benchmark(run_id, config)\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 881, in run_processing_benchmark\n    execution_result = asyncio.run(\n        _execute_processing_requests_async(\n    ...<6 lines>...\n        )\n    )\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 195, in run\n    return runner.run(main)\n           ~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py\", line 725, in run_until_complete\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 793, in _execute_processing_requests_async\n    client_kwargs = _build_openai_client_kwargs(model_name, timeout)\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 760, in _build_openai_client_kwargs\n    raise RuntimeError(\"DEEPSEEK_API_KEY is required to run DeepSeek processing benchmarks\")\nRuntimeError: DEEPSEEK_API_KEY is required to run DeepSeek processing benchmarks\n",
+  "binned_at": "2026-04-12T18:49:21Z"
+}

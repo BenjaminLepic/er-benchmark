@@ -1,0 +1,26 @@
+{
+  "run_id": "64f16b85",
+  "status": "failed",
+  "is_binned": false,
+  "created_at": "2026-08-01T16:27:22Z",
+  "completed_at": "2026-08-01T16:27:40Z",
+  "dataset": "abt-buy",
+  "blocking_config": {
+    "representation": "openai-small-1536",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 10,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two {type_of_data} records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "grok-4-1-fast-reasoning",
+    "batching_mode": "one_to_many",
+    "batch_size": 5,
+    "concurrency": 200
+  },
+  "error": "Error code: 429 - {'code': 'resource-exhausted', 'error': \"Too many requests for team d959d35c-3753-462d-8cd5-5e24d0a3ce46 and model grok-4.3. Your team's rate limit is \u2014 Requests per Second (actual/limit): 37/37. Your rate limit tier is determined based on your historical API spend. To learn how to increase your rate limit tier, please visit https://console.x.ai/team/default/rate-limits.\"}",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 694, in _run_processing_benchmark_background\n    result = run_processing_benchmark(run_id, config)\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 936, in run_processing_benchmark\n    execution_result = asyncio.run(\n        _execute_processing_requests_async(\n    ...<6 lines>...\n        )\n    )\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 195, in run\n    return runner.run(main)\n           ~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py\", line 725, in run_until_complete\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 849, in _execute_processing_requests_async\n    return await _execute_batches_async(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 636, in _execute_batches_async\n    result = await task\n             ^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py\", line 634, in _wait_for_one\n    return f.result() if resolve else f\n           ~~~~~~~~^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 599, in execute_one\n    response = await _call_with_retries_async(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 390, in _call_with_retries_async\n    raise last_error\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/benchmark/processing_runner.py\", line 362, in _call_with_retries_async\n    return await client.beta.chat.completions.parse(**request_kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py\", line 1668, in parse\n    return await self._post(\n           ^^^^^^^^^^^^^^^^^\n    ...<52 lines>...\n    )\n    ^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/venv/lib/python3.13/site-packages/openai/_base_client.py\", line 1884, in post\n    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/benjaminlepic/Desktop/er-benchmark/venv/lib/python3.13/site-packages/openai/_base_client.py\", line 1669, in request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.RateLimitError: Error code: 429 - {'code': 'resource-exhausted', 'error': \"Too many requests for team d959d35c-3753-462d-8cd5-5e24d0a3ce46 and model grok-4.3. Your team's rate limit is \u2014 Requests per Second (actual/limit): 37/37. Your rate limit tier is determined based on your historical API spend. To learn how to increase your rate limit tier, please visit https://console.x.ai/team/default/rate-limits.\"}\n"
+}

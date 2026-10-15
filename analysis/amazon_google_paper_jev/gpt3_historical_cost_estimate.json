@@ -1,0 +1,23 @@
+{
+  "model": "text-davinci-002",
+  "tokenizer": "p50k_base",
+  "method": "Released manufacturer-specific manual prefixes and supplied test pairs; one request per pair",
+  "first_200": {
+    "pairs": 200,
+    "input_tokens": 129333,
+    "mean_input_tokens": 646.665,
+    "cost_at_60_per_million": 7.77198,
+    "cost_at_20_per_million": 2.59066
+  },
+  "full_test": {
+    "pairs": 2293,
+    "input_tokens": 1454956,
+    "cost_at_60_per_million": 87.43494,
+    "cost_at_20_per_million": 29.14498
+  },
+  "demo_count_range": [
+    0,
+    10
+  ],
+  "output_assumption": "One token Yes/No per pair; up to three completion tokens configured in released runner"
+}

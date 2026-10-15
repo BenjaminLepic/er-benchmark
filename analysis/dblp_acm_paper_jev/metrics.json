@@ -1,0 +1,50 @@
+{
+  "dataset": "DBLP-ACM",
+  "model": "jev-1.13.0",
+  "threshold": 0.5,
+  "demonstrations": 0,
+  "serialization": "values_multiline",
+  "batching": "one_to_many",
+  "batch_size": 10,
+  "concurrency": 5,
+  "system_prompt": "You determine whether two publication records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nReturn only the structured decision output for the records you evaluate.",
+  "dataset_url": "https://fm-data-tasks.s3.us-west-1.amazonaws.com/datasets.tar.gz",
+  "file_sha256": {
+    "tableA.csv": "a83dfac196a4e263f3adac7aaf095c7198254a98fcaed0ec68d59130c74c43a7",
+    "tableB.csv": "bd103ffdccdff4d8b9d04c18d90d04110b70b6fc87dec83c4e52e9616c58431a",
+    "test.csv": "e49adc4590d24c18b1a9bbd96011d9c745e10432e10e93e050d856a206fac394"
+  },
+  "full_test": {
+    "precision": 0.950644,
+    "recall": 0.997748,
+    "f1": 0.973626,
+    "pairs": 2473,
+    "positives": 444,
+    "true_positives": 443,
+    "false_positives": 23,
+    "false_negatives": 1,
+    "true_negatives": 2006
+  },
+  "first_200": {
+    "precision": 0.975,
+    "recall": 1.0,
+    "f1": 0.987342,
+    "pairs": 200,
+    "positives": 39,
+    "true_positives": 39,
+    "false_positives": 1,
+    "false_negatives": 0,
+    "true_negatives": 160
+  },
+  "seconds": 45.063,
+  "requests": 1275,
+  "input_tokens": 915512,
+  "cost": {
+    "input_cost_usd": 0.038452,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 0.0,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 0.038452
+  },
+  "comparison_note": "First 200 test rows follow released script selection; paper Table 1 subset correspondence is not independently verified. Jev uses native typed decisions, the existing benchmark prompt, and no demonstrations; this is not a replication of GPT-3 prompting."
+}

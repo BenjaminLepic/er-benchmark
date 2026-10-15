@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% block title %}Processing Run {{ run.run_id }} — ER Benchmark{% endblock %}
+{% block content %}
+{% set derived_recall_loss = run.recall_loss if run.recall_loss is defined else ((run.blocking_metrics.recall - run.metrics.recall) if run.blocking_metrics is defined and run.metrics is defined else none) %}
+<h1>Processing Run {{ run.run_id }}</h1>
+<a href="{{ url_for('processing_benchmark') }}">&larr; Back to processing benchmark</a>
+
+<section class="card">
+    <div class="detail-header">
+        <h2>Status</h2>
+        <div class="actions-inline">
+            <span id="run-status-badge" class="pill pill-{{ run.status|default('unknown') }}">{{ run.status|default('unknown') }}</span>
+            {% if run.status in ['queued', 'running', 'stopping'] %}
+            <form method="POST" action="{{ url_for('stop_processing_run', run_id=run.run_id) }}">
+                <input type="hidden" name="next" value="detail">
+                <button type="submit" class="btn btn-small" onclick="return confirm('Stop this processing run? In-flight work will be cancelled as soon as possible.')">Stop Processing</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <dl class="detail-grid">
+        <dt>Dataset</dt><dd>{{ run.dataset }}</dd>
+        <dt>Created</dt><dd>{{ run.created_at }}</dd>
+        <dt>Completed</dt><dd>{{ run.completed_at if run.completed_at is defined else '—' }}</dd>
+        <dt>Stage</dt><dd id="run-stage">{{ run.progress.stage if run.progress is defined and run.progress.stage is defined else '—' }}</dd>
+        <dt>Progress</dt>
+        <dd id="run-progress">
+            {% if run.progress is defined and run.progress.total_requests %}
+            {{ run.progress.completed_requests }} / {{ run.progress.total_requests }} requests,
+            {{ run.progress.completed_pairs }} / {{ run.progress.total_pairs }} pairs
+            {% else %}
+            —
+            {% endif %}
+        </dd>
+        {% if run.error is defined %}
+        <dt>Error</dt><dd class="bad">{{ run.error }}</dd>
+        {% endif %}
+    </dl>
+</section>
+
+{% if run.status == 'completed' %}
+<section class="card">
+    <h2>Metrics</h2>
+    <dl class="detail-grid">
+        <dt>Candidate Recall</dt><dd>{{ "%.6f"|format(run.blocking_metrics.recall) }}</dd>
+        <dt>Avg Candidates / Record</dt><dd>{{ run.counts.avg_candidates_per_record if run.counts.avg_candidates_per_record is defined else run.blocking_metrics.avg_k }}</dd>
+        <dt>Recall Loss</dt><dd>{{ "%.6f"|format(derived_recall_loss) if derived_recall_loss is not none else '—' }}</dd>
+        <dt>Precision</dt><dd>{{ "%.6f"|format(run.metrics.precision) }}</dd>
+        <dt>Recall</dt><dd>{{ "%.6f"|format(run.metrics.recall) }}</dd>
+        <dt>F1</dt><dd>{{ "%.6f"|format(run.metrics.f1) }}</dd>
+        <dt>Candidate Pairs</dt><dd>{{ run.counts.candidate_pairs }}</dd>
+        <dt>Predicted Matches</dt><dd>{{ run.counts.predicted_matches }}</dd>
+        <dt>True Positives</dt><dd>{{ run.counts.true_positives if run.counts.true_positives is defined else run.metrics.true_positives }}</dd>
+        <dt>False Positives</dt><dd>{{ run.counts.false_positives if run.counts.false_positives is defined else '—' }}</dd>
+        <dt>False Negatives</dt><dd>{{ run.counts.false_negatives if run.counts.false_negatives is defined else '—' }}</dd>
+        <dt>LLM Requests</dt><dd>{{ run.counts.llm_requests }}</dd>
+        <dt>Estimated Cost</dt><dd>${{ "%.6f"|format(run.cost.total_cost_usd) }}</dd>
+        <dt>Total Time</dt><dd>{{ "%.3f"|format(run.timing.total_time_s) }}s</dd>
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Configuration</h2>
+    <dl class="detail-grid">
+        <dt>Representation</dt><dd>{{ run.blocking_config.representation }}</dd>
+        <dt>Index Type</dt><dd>{{ run.blocking_config.index_type }}</dd>
+        <dt>Retrieval</dt><dd>{{ run.blocking_config.retrieval }}</dd>
+        <dt>k</dt><dd>{{ run.blocking_config.k }}</dd>
+        <dt>Threshold</dt><dd>{{ run.blocking_config.threshold if run.blocking_config.threshold is not none else '—' }}</dd>
+        <dt>Serialization</dt><dd>{{ run.processing_config.serialization_mode }}</dd>
+        <dt>Model</dt><dd>{{ run.processing_config.model }}</dd>
+        <dt>Batching</dt><dd>{{ run.processing_config.batching_mode }} ({{ run.processing_config.batch_size }})</dd>
+        <dt>Concurrency</dt><dd>{{ run.processing_config.concurrency if run.processing_config.concurrency is defined else '—' }}</dd>
+        {% if run.processing_config.decision_threshold is defined and run.processing_config.decision_threshold is not none %}
+        <dt>Decision Threshold</dt><dd>{{ run.processing_config.decision_threshold }}</dd>
+        {% endif %}
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Usage</h2>
+    <dl class="detail-grid">
+        <dt>Input Tokens</dt><dd>{{ run.usage.input_tokens }}</dd>
+        <dt>Cached Input Tokens</dt><dd>{{ run.usage.cached_input_tokens }}</dd>
+        <dt>Cache Write Tokens</dt><dd>{{ run.usage.cache_write_tokens if run.usage.cache_write_tokens is defined else 0 }}</dd>
+        <dt>Output Tokens</dt><dd>{{ run.usage.output_tokens }}</dd>
+        <dt>Total Tokens</dt><dd>{{ run.usage.total_tokens }}</dd>
+        <dt>Avg Input / Request</dt><dd>{{ run.usage.avg_input_tokens_per_request }}</dd>
+        <dt>Avg Output / Request</dt><dd>{{ run.usage.avg_output_tokens_per_request }}</dd>
+        <dt>Avg Tokens / Pair</dt><dd>{{ run.usage.avg_tokens_per_pair }}</dd>
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Prompt Preview</h2>
+    <h3>System Prompt</h3>
+    <pre class="code-block">{{ run.prompt_preview.system_prompt }}</pre>
+    <h3>First User Prompt</h3>
+    <pre class="code-block">{{ run.prompt_preview.first_user_prompt }}</pre>
+    <h3>First Response</h3>
+    <pre class="code-block">{{ run.prompt_preview.first_response_text }}</pre>
+</section>
+
+<section class="card">
+    <h2>Decision Breakdown</h2>
+    {% if run.decision_breakdown is defined %}
+    <details class="decision-section">
+        <summary>True Positives ({{ run.counts.true_positives if run.counts.true_positives is defined else run.metrics.true_positives }})</summary>
+        {% if run.decision_breakdown.true_positives %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Record A</th>
+                    <th>Record B</th>
+                    <th>Record A Fields</th>
+                    <th>Record B Fields</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in run.decision_breakdown.true_positives %}
+                <tr>
+                    <td>{{ row.record_a_id }}</td>
+                    <td>{{ row.record_b_id }}</td>
+                    <td><pre class="mini-code">{{ row.record_a_fields|tojson(indent=2) }}</pre></td>
+                    <td><pre class="mini-code">{{ row.record_b_fields|tojson(indent=2) }}</pre></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No true positives for this run.</p>
+        {% endif %}
+    </details>
+
+    <details class="decision-section">
+        <summary>False Positives ({{ run.counts.false_positives }})</summary>
+        {% if run.decision_breakdown.false_positives %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Record A</th>
+                    <th>Record B</th>
+                    <th>Record A Fields</th>
+                    <th>Record B Fields</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in run.decision_breakdown.false_positives %}
+                <tr>
+                    <td>{{ row.record_a_id }}</td>
+                    <td>{{ row.record_b_id }}</td>
+                    <td><pre class="mini-code">{{ row.record_a_fields|tojson(indent=2) }}</pre></td>
+                    <td><pre class="mini-code">{{ row.record_b_fields|tojson(indent=2) }}</pre></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No false positives for this run.</p>
+        {% endif %}
+    </details>
+
+    <details class="decision-section">
+        <summary>False Negatives ({{ run.counts.false_negatives }})</summary>
+        {% if run.decision_breakdown.false_negatives %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Record A</th>
+                    <th>Record B</th>
+                    <th>Record A Fields</th>
+                    <th>Record B Fields</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in run.decision_breakdown.false_negatives %}
+                <tr>
+                    <td>{{ row.record_a_id }}</td>
+                    <td>{{ row.record_b_id }}</td>
+                    <td><pre class="mini-code">{{ row.record_a_fields|tojson(indent=2) }}</pre></td>
+                    <td><pre class="mini-code">{{ row.record_b_fields|tojson(indent=2) }}</pre></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No false negatives for this run.</p>
+        {% endif %}
+    </details>
+    {% else %}
+    <p>This older run does not include stored TP/FP/FN rows. Re-run it to capture the full decision breakdown.</p>
+    {% endif %}
+</section>
+{% elif run.status == 'failed' %}
+<section class="card">
+    <h2>Failure</h2>
+    <p class="bad">{{ run.error }}</p>
+    {% if run.traceback is defined %}
+    <pre class="code-block">{{ run.traceback }}</pre>
+    {% endif %}
+</section>
+{% elif run.status == 'stopped' %}
+<section class="card">
+    <h2>Stopped</h2>
+    <p>This run was stopped before completion.</p>
+    {% if run.blocking_metrics is defined and run.blocking_metrics %}
+    <dl class="detail-grid">
+        <dt>Candidate Recall</dt><dd>{{ "%.6f"|format(run.blocking_metrics.recall) }}</dd>
+        <dt>Avg Candidates / Record</dt><dd>{{ run.counts.avg_candidates_per_record if run.counts and run.counts.avg_candidates_per_record is defined else run.blocking_metrics.avg_k }}</dd>
+        <dt>Candidate Pairs</dt><dd>{{ run.counts.candidate_pairs if run.counts and run.counts.candidate_pairs is defined else '—' }}</dd>
+        <dt>Completed Requests</dt><dd>{{ run.progress.completed_requests if run.progress and run.progress.completed_requests is defined else '—' }}</dd>
+        <dt>Total Requests</dt><dd>{{ run.progress.total_requests if run.progress and run.progress.total_requests is defined else '—' }}</dd>
+    </dl>
+    {% endif %}
+</section>
+{% else %}
+<section class="card">
+    <h2>Run In Progress</h2>
+    <p>This page polls automatically while the benchmark is running.</p>
+</section>
+{% endif %}
+
+<script>
+(function() {
+    const currentStatus = '{{ run.status }}';
+    if (currentStatus === 'completed' || currentStatus === 'failed' || currentStatus === 'stopped') return;
+
+    const runId = '{{ run.run_id }}';
+    const statusBadge = document.getElementById('run-status-badge');
+    const stageNode = document.getElementById('run-stage');
+    const progressNode = document.getElementById('run-progress');
+
+    async function poll() {
+        const response = await fetch(`{{ url_for('api_processing_run', run_id=run.run_id) }}`);
+        if (!response.ok) return;
+        const data = await response.json();
+
+        statusBadge.textContent = data.status || 'unknown';
+        statusBadge.className = `pill pill-${data.status || 'unknown'}`;
+        stageNode.textContent = data.progress && data.progress.stage ? data.progress.stage : '—';
+        if (data.progress && data.progress.total_requests) {
+            progressNode.textContent = `${data.progress.completed_requests} / ${data.progress.total_requests} requests, ${data.progress.completed_pairs} / ${data.progress.total_pairs} pairs`;
+        } else {
+            progressNode.textContent = '—';
+        }
+
+        if (data.status === 'completed' || data.status === 'failed' || data.status === 'stopped') {
+            window.location.reload();
+            return;
+        }
+        window.setTimeout(poll, 2000);
+    }
+
+    window.setTimeout(poll, 1500);
+})();
+</script>
+{% endblock %}

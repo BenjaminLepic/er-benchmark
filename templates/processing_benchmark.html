@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+{% block title %}Processing Benchmark — ER Benchmark{% endblock %}
+{% block content %}
+<h1>Processing Benchmark</h1>
+<p>Benchmark the LLM evaluation step after candidate generation and compare quality, latency, and cost.</p>
+
+<section class="card">
+    <h2>Create Run</h2>
+    <form id="processing-run-form">
+        <div class="form-grid form-grid-wide">
+            <div class="form-group">
+                <label>Dataset</label>
+                <select name="dataset">
+                    {% for dataset in datasets %}
+                    <option value="{{ dataset }}" {% if defaults.dataset == dataset %}selected{% endif %}>{{ dataset }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Representation</label>
+                <select name="representation">
+                    {% for representation in representations %}
+                    <option value="{{ representation }}" {% if defaults.representation == representation %}selected{% endif %}>{{ representation }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Index Type</label>
+                <select name="index_type">
+                    {% for index_type in index_types %}
+                    <option value="{{ index_type }}" {% if defaults.index_type == index_type %}selected{% endif %}>{{ index_type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Retrieval Strategy</label>
+                <select name="retrieval">
+                    {% for retrieval in retrievals %}
+                    <option value="{{ retrieval }}" {% if defaults.retrieval == retrieval %}selected{% endif %}>{{ retrieval }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>k</label>
+                <input type="number" name="k" min="1" value="{{ defaults.k }}">
+            </div>
+
+            <div class="form-group">
+                <label>Threshold</label>
+                <input type="number" name="threshold" min="0" max="1" step="0.01" value="{{ defaults.threshold }}">
+            </div>
+
+            <div class="form-group">
+                <label>Serialization</label>
+                <select name="serialization_mode">
+                    {% for key, label in serialization_modes.items() %}
+                    <option value="{{ key }}" {% if defaults.serialization_mode == key %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Model</label>
+                <select name="model">
+                    {% for key, model in models.items() %}
+                    <option value="{{ key }}" {% if defaults.model == key %}selected{% endif %}>{{ key }} — {{ model.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Batching Mode</label>
+                <select name="batching_mode">
+                    {% for key, label in batching_modes.items() %}
+                    <option value="{{ key }}" {% if defaults.batching_mode == key %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Batch Size</label>
+                <input type="number" name="batch_size" min="1" value="{{ defaults.batch_size }}">
+            </div>
+
+            <div class="form-group">
+                <label>Concurrency</label>
+                <input type="number" name="concurrency" min="1" value="{{ defaults.concurrency }}">
+                <small class="hint">Number of LLM requests to run in parallel.</small>
+            </div>
+
+            <div class="form-group form-group-span-2">
+                <label>Base Prompt</label>
+                <textarea name="base_prompt" rows="7">{{ defaults.base_prompt }}</textarea>
+                <small class="hint">Use <code>{type_of_data}</code> to inject the dataset entity type.</small>
+            </div>
+
+            <div class="form-group form-group-span-2">
+                <label>Custom Instructions</label>
+                <textarea name="custom_instructions" rows="4" placeholder="Optional additional instructions to layer onto the base prompt.">{{ defaults.custom_instructions }}</textarea>
+            </div>
+        </div>
+
+        <div class="actions-inline">
+            <button type="submit" class="btn" id="processing-run-btn">Start Processing Run</button>
+            <span id="processing-run-status" class="status-inline"></span>
+        </div>
+    </form>
+</section>
+
+{% if runs or binned_runs %}
+{% if runs %}
+<section class="card">
+    <div class="section-header">
+        <h2>Cost vs F1</h2>
+        <form method="POST" action="{{ url_for('clear_processing_runs') }}">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Clear all processing benchmark results?')">Clear Runs</button>
+        </form>
+    </div>
+    <canvas id="cost-chart" height="120"></canvas>
+</section>
+
+<section class="card">
+    <h2>Runs</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Dataset</th>
+                <th>Blocking</th>
+                <th>Model</th>
+                <th>Batching</th>
+                <th>Concurrency</th>
+                <th>Serialization</th>
+                <th>Candidate Recall</th>
+                <th>Recall Loss</th>
+                <th>F1</th>
+                <th>Recall</th>
+                <th>Precision</th>
+                <th>Cost</th>
+                <th>Total Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for run in runs %}
+            <tr>
+                <td>
+                    <span class="pill pill-{{ run.status|default('unknown') }}">{{ run.status|default('unknown') }}</span>
+                </td>
+                <td>{{ run.dataset }}</td>
+                <td>
+                    {{ run.blocking_config.representation if run.blocking_config else '—' }}
+                    /
+                    {{ run.blocking_config.index_type if run.blocking_config else '—' }}
+                    /
+                    {{ run.blocking_config.retrieval if run.blocking_config else '—' }}
+                </td>
+                <td>{{ run.processing_config.model if run.processing_config else '—' }}</td>
+                <td>
+                    {{ run.processing_config.batching_mode if run.processing_config else '—' }}
+                    {% if run.processing_config and run.processing_config.batch_size %}
+                    ({{ run.processing_config.batch_size }})
+                    {% endif %}
+                </td>
+                <td>{{ run.processing_config.concurrency if run.processing_config and run.processing_config.concurrency is defined else '—' }}</td>
+                <td>{{ run.processing_config.serialization_mode if run.processing_config else '—' }}</td>
+                <td>
+                    {% if run.blocking_metrics %}
+                    {{ "%.4f"|format(run.blocking_metrics.recall) }}
+                    <span class="table-subtle">avg {{ run.counts.avg_candidates_per_record if run.counts and run.counts.avg_candidates_per_record is defined else run.blocking_metrics.avg_k }}/A</span>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td>{{ "%.4f"|format(run.recall_loss) if run.recall_loss is defined else '—' }}</td>
+                <td>{{ "%.4f"|format(run.f1) if run.f1 is defined else '—' }}</td>
+                <td>{{ "%.4f"|format(run.recall) if run.recall is defined else '—' }}</td>
+                <td>{{ "%.4f"|format(run.precision) if run.precision is defined else '—' }}</td>
+                <td>
+                    {% if run.estimated_cost_usd is defined %}
+                    ${{ "%.6f"|format(run.estimated_cost_usd) }}
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td>{{ "%.3f"|format(run.total_time_s) if run.total_time_s is defined else '—' }}{% if run.total_time_s is defined %}s{% endif %}</td>
+                <td class="table-actions">
+                    <a href="{{ url_for('processing_benchmark_detail', run_id=run.run_id) }}">detail</a>
+                    {% if run.status in ['queued', 'running', 'stopping'] %}
+                    <form method="POST" action="{{ url_for('stop_processing_run', run_id=run.run_id) }}">
+                        <button type="submit" class="btn btn-small" onclick="return confirm('Stop this processing run? In-flight work will be cancelled as soon as possible.')">Stop</button>
+                    </form>
+                    {% endif %}
+                    {% if run.status in ['completed', 'failed', 'stopped'] %}
+                    <form method="POST" action="{{ url_for('bin_processing_run', run_id=run.run_id) }}">
+                        <button type="submit" class="btn btn-danger btn-small" onclick="return confirm('Move this run to the bin? It will disappear from the main table and graph.')">Bin</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% else %}
+<section class="card">
+    <div class="section-header">
+        <h2>Runs</h2>
+        <form method="POST" action="{{ url_for('clear_processing_runs') }}">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Clear all processing benchmark results?')">Clear Runs</button>
+        </form>
+    </div>
+    <p>No active runs. Restore a binned run to bring it back into the graph.</p>
+</section>
+{% endif %}
+
+{% if binned_runs %}
+<section class="card">
+    <h2>Binned Runs</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Dataset</th>
+                <th>Blocking</th>
+                <th>Model</th>
+                <th>F1</th>
+                <th>Cost</th>
+                <th>Total Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for run in binned_runs %}
+            <tr>
+                <td>
+                    <span class="pill pill-{{ run.status|default('unknown') }}">{{ run.status|default('unknown') }}</span>
+                </td>
+                <td>{{ run.dataset }}</td>
+                <td>
+                    {{ run.blocking_config.representation if run.blocking_config else '—' }}
+                    /
+                    {{ run.blocking_config.index_type if run.blocking_config else '—' }}
+                    /
+                    {{ run.blocking_config.retrieval if run.blocking_config else '—' }}
+                </td>
+                <td>{{ run.processing_config.model if run.processing_config else '—' }}</td>
+                <td>{{ "%.4f"|format(run.f1) if run.f1 is defined else '—' }}</td>
+                <td>
+                    {% if run.estimated_cost_usd is defined %}
+                    ${{ "%.6f"|format(run.estimated_cost_usd) }}
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td>{{ "%.3f"|format(run.total_time_s) if run.total_time_s is defined else '—' }}{% if run.total_time_s is defined %}s{% endif %}</td>
+                <td class="table-actions">
+                    <a href="{{ url_for('processing_benchmark_detail', run_id=run.run_id) }}">detail</a>
+                    <form method="POST" action="{{ url_for('restore_processing_run', run_id=run.run_id) }}">
+                        <button type="submit" class="btn btn-small">Restore</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+{% else %}
+<section class="card">
+    <p>No processing benchmark runs yet.</p>
+</section>
+{% endif %}
+
+<script>
+(function() {
+    const form = document.getElementById('processing-run-form');
+    const button = document.getElementById('processing-run-btn');
+    const statusNode = document.getElementById('processing-run-status');
+    const modelSelect = form ? form.querySelector('select[name="model"]') : null;
+    const storageKey = 'processingBenchmarkLastModel';
+
+    if (modelSelect) {
+        const storedModel = window.localStorage.getItem(storageKey);
+        if (storedModel && [...modelSelect.options].some(option => option.value === storedModel)) {
+            modelSelect.value = storedModel;
+        }
+    }
+
+    if (form) {
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            button.disabled = true;
+            statusNode.textContent = 'Starting run...';
+
+            const payload = Object.fromEntries(new FormData(form).entries());
+            try {
+                const response = await fetch('{{ url_for("processing_benchmark_run") }}', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload),
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to start run');
+                }
+                if (modelSelect) {
+                    window.localStorage.setItem(storageKey, modelSelect.value);
+                }
+                window.location.href = data.detail_url;
+            } catch (error) {
+                statusNode.textContent = error.message;
+                button.disabled = false;
+            }
+        });
+    }
+
+    const runs = {{ runs|tojson }};
+    if (!runs.length) return;
+
+    const completeRuns = runs.filter(run => run.status === 'completed' && typeof run.f1 === 'number' && typeof run.estimated_cost_usd === 'number');
+    if (!completeRuns.length) return;
+
+    new Chart(document.getElementById('cost-chart'), {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Runs',
+                data: completeRuns.map(run => ({
+                    x: run.estimated_cost_usd,
+                    y: run.f1,
+                    label: `${run.run_id} • ${run.processing_config.model} • ${run.processing_config.batching_mode}`,
+                })),
+                backgroundColor: '#1a1a2e',
+            }],
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {display: true, text: 'Estimated Cost (USD)'},
+                },
+                y: {
+                    title: {display: true, text: 'F1'},
+                    min: 0.7,
+                    max: 1,
+                },
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label(context) {
+                            const point = context.raw;
+                            return `${point.label}: cost $${point.x.toFixed(6)}, f1 ${point.y.toFixed(4)}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+})();
+</script>
+{% endblock %}

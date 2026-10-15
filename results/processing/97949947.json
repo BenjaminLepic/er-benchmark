@@ -1,0 +1,99 @@
+{
+  "run_id": "97949947",
+  "status": "completed",
+  "created_at": "2026-03-22T06:19:35Z",
+  "completed_at": "2026-03-22T06:20:01Z",
+  "dataset": "abt-buy",
+  "dataset_entity_type": "product records",
+  "repr_label": "openai-small-1536",
+  "blocking_config": {
+    "representation": "openai-small-1536",
+    "repr_label": "openai-small-1536",
+    "index_type": "sklearn",
+    "retrieval": "topk",
+    "k": 3,
+    "threshold": 0.5
+  },
+  "processing_config": {
+    "serialization_mode": "values_multiline",
+    "base_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n",
+    "custom_instructions": "",
+    "model": "gpt-5-nano",
+    "batching_mode": "one_to_many",
+    "batch_size": 5,
+    "concurrency": 500
+  },
+  "counts": {
+    "n_records_a": 1081,
+    "n_records_b": 1092,
+    "n_ground_truth": 1097,
+    "candidate_pairs": 3243,
+    "predicted_matches": 1007,
+    "llm_requests": 1081
+  },
+  "blocking_metrics": {
+    "recall": 0.944394,
+    "reduction_ratio": 0.997253,
+    "precision": 0.319457,
+    "f1": 0.477419,
+    "true_positives": 1036,
+    "n_candidates": 3243,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 3.0
+  },
+  "metrics": {
+    "recall": 0.863263,
+    "reduction_ratio": 0.999147,
+    "precision": 0.940417,
+    "f1": 0.90019,
+    "true_positives": 947,
+    "n_candidates": 1007,
+    "n_ground_truth": 1097,
+    "total_possible_pairs": 1180452,
+    "avg_k": 0.93
+  },
+  "usage": {
+    "input_tokens": 412398,
+    "output_tokens": 522871,
+    "cached_input_tokens": 0,
+    "total_tokens": 935269,
+    "avg_input_tokens_per_request": 381.5,
+    "avg_output_tokens_per_request": 483.69,
+    "avg_tokens_per_pair": 288.4
+  },
+  "cost": {
+    "input_cost_usd": 0.02062,
+    "cached_input_cost_usd": 0.0,
+    "output_cost_usd": 0.209148,
+    "request_cost_usd": 0.0,
+    "total_cost_usd": 0.229768
+  },
+  "timing": {
+    "repr_time_s": 7.715,
+    "index_build_time_s": 0.0,
+    "query_time_s": 0.021,
+    "llm_time_s": 17.629,
+    "avg_request_time_s": 5.025,
+    "total_time_s": 25.478
+  },
+  "prompt_preview": {
+    "system_prompt": "You determine whether two Product records represent the same real-world entity.\n\nAccount for common variations such as typos, abbreviations, formatting differences, and domain-specific naming conventions.\nMake a conservative decision when key identifiers conflict, and keep your reasoning brief and user-facing.\n\nReturn only the structured decision output for the records you evaluate.",
+    "first_user_prompt": "Evaluate each candidate independently against the shared source record.\nReturn one decision for every candidate_id.\n\nSource Record:\nOmnimount Wall Speaker Mount - 20WLBK\nOmnimount Wall Speaker Mount - 20WLBK/ Stainless Steel Shafts And All Necessary Hardware Included/ Supports Speakers Up To 20 lbs./ Sold As Single / Black Finish\n$39.95\n\nCandidates:\n\nCandidate ID: 90106172\nOmniMount Universal Wall Speaker Mounting Kit - 20.0 WALL-B\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\n$24.34\n\nCandidate ID: 90106210\nOmniMount Stainless Steel Speaker Mount - 20.0 WALL-W\nStainless Steel - 20 lb\nOMNIMOUNT SYSTEMS, INC\nnan\n\nCandidate ID: 90125786\nSanus Wall/Ceiling Speaker Mount - WMS3S SILVER\nPlastic - 8 lb\nSanus\nnan",
+    "first_response_text": "{\"decisions\":[{\"candidate_id\":\"90106172\",\"is_duplicate\":false,\"reason\":\"Differences in product type (kit vs. single wall mount) and color/finish not specified; not clearly the same SKU as source.\"},{\"candidate_id\":\"90106210\",\"is_duplicate\":false,\"reason\":\"Different model/finish (WALL-W vs WLBK) and no clear SKU match; weight rating similar but details differ.\"},{\"candidate_id\":\"90125786\",\"is_duplicate\":false,\"reason\":\"Different brand (Sanus) and product category; not the same product despite wall/ceiling mount context.\"}]}"
+  },
+  "progress": {
+    "stage": "complete",
+    "completed_requests": 1081,
+    "total_requests": 1081,
+    "completed_pairs": 3243,
+    "total_pairs": 3243,
+    "candidate_pairs": 3243,
+    "candidate_recall": 0.944394
+  },
+  "precision": 0.940417,
+  "recall": 0.863263,
+  "f1": 0.90019,
+  "estimated_cost_usd": 0.229768,
+  "total_time_s": 25.478
+}

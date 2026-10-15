@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="570" viewBox="0 0 980 570">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>text{font-family:Inter,system-ui,-apple-system,sans-serif;fill:#243244}.title{font-size:22px;font-weight:700}.axis{font-size:13px}.legend{font-size:12px}.note{font-size:11px;fill:#64748b}</style>
+<text x="92" y="34" class="title">General-policy frontier across five datasets</text>
+<line x1="92.0" y1="70" x2="92.0" y2="492" stroke="#e5e7eb"/>
+<text x="92.0" y="516" text-anchor="middle" class="axis">5</text>
+<line x1="216.6" y1="70" x2="216.6" y2="492" stroke="#e5e7eb"/>
+<text x="216.6" y="516" text-anchor="middle" class="axis">14</text>
+<line x1="341.2" y1="70" x2="341.2" y2="492" stroke="#e5e7eb"/>
+<text x="341.2" y="516" text-anchor="middle" class="axis">23</text>
+<line x1="465.8" y1="70" x2="465.8" y2="492" stroke="#e5e7eb"/>
+<text x="465.8" y="516" text-anchor="middle" class="axis">32</text>
+<line x1="590.4" y1="70" x2="590.4" y2="492" stroke="#e5e7eb"/>
+<text x="590.4" y="516" text-anchor="middle" class="axis">41</text>
+<line x1="715.0" y1="70" x2="715.0" y2="492" stroke="#e5e7eb"/>
+<text x="715.0" y="516" text-anchor="middle" class="axis">50</text>
+<line x1="92" y1="492.0" x2="715" y2="492.0" stroke="#e5e7eb"/>
+<text x="80" y="496.0" text-anchor="end" class="axis">0.650</text>
+<line x1="92" y1="407.6" x2="715" y2="407.6" stroke="#e5e7eb"/>
+<text x="80" y="411.6" text-anchor="end" class="axis">0.720</text>
+<line x1="92" y1="323.2" x2="715" y2="323.2" stroke="#e5e7eb"/>
+<text x="80" y="327.2" text-anchor="end" class="axis">0.790</text>
+<line x1="92" y1="238.8" x2="715" y2="238.8" stroke="#e5e7eb"/>
+<text x="80" y="242.8" text-anchor="end" class="axis">0.860</text>
+<line x1="92" y1="154.4" x2="715" y2="154.4" stroke="#e5e7eb"/>
+<text x="80" y="158.4" text-anchor="end" class="axis">0.930</text>
+<line x1="92" y1="70.0" x2="715" y2="70.0" stroke="#e5e7eb"/>
+<text x="80" y="74.0" text-anchor="end" class="axis">1.000</text>
+<line x1="92" y1="492" x2="715" y2="492" stroke="#334155"/>
+<line x1="92" y1="70" x2="92" y2="492" stroke="#334155"/>
+<text x="403.5" y="550" text-anchor="middle" class="axis">Mean candidates per query</text>
+<text x="22" y="281.0" text-anchor="middle" class="axis" transform="rotate(-90 22 281.0)">Worst-dataset blocking recall</text>
+<polyline points="200.0,376.3 377.2,197.8 554.4,135.1 687.3,101.5" fill="none" stroke="#64748b" stroke-width="2.5"/>
+<circle cx="200.0" cy="376.3" r="4" fill="#64748b"><title>Adaptive BM25 / top-k: x=12.80, y=0.7460</title></circle>
+<circle cx="377.2" cy="197.8" r="4" fill="#64748b"><title>Adaptive BM25 / top-k: x=25.60, y=0.8940</title></circle>
+<circle cx="554.4" cy="135.1" r="4" fill="#64748b"><title>Adaptive BM25 / top-k: x=38.40, y=0.9460</title></circle>
+<circle cx="687.3" cy="101.5" r="4" fill="#64748b"><title>Adaptive BM25 / top-k: x=48.00, y=0.9738</title></circle>
+<line x1="741" y1="86" x2="766" y2="86" stroke="#64748b" stroke-width="3"/>
+<text x="775" y="90" class="legend">Adaptive BM25 / top-k</text>
+<polyline points="150.3,446.2 285.8,260.5 427.6,156.8 528.0,120.6" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="7 5"/>
+<circle cx="150.3" cy="446.2" r="4" fill="#94a3b8"><title>Adaptive BM25 / reciprocal: x=9.21, y=0.6880</title></circle>
+<circle cx="285.8" cy="260.5" r="4" fill="#94a3b8"><title>Adaptive BM25 / reciprocal: x=19.00, y=0.8420</title></circle>
+<circle cx="427.6" cy="156.8" r="4" fill="#94a3b8"><title>Adaptive BM25 / reciprocal: x=29.24, y=0.9280</title></circle>
+<circle cx="528.0" cy="120.6" r="4" fill="#94a3b8"><title>Adaptive BM25 / reciprocal: x=36.50, y=0.9580</title></circle>
+<line x1="741" y1="120" x2="766" y2="120" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="775" y="124" class="legend">Adaptive BM25 / reciprocal</text>
+<polyline points="200.0,330.4 377.2,183.3 554.4,115.8 687.3,94.1" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="200.0" cy="330.4" r="4" fill="#2563eb"><title>OpenAI small 512d / top-k: x=12.80, y=0.7840</title></circle>
+<circle cx="377.2" cy="183.3" r="4" fill="#2563eb"><title>OpenAI small 512d / top-k: x=25.60, y=0.9060</title></circle>
+<circle cx="554.4" cy="115.8" r="4" fill="#2563eb"><title>OpenAI small 512d / top-k: x=38.40, y=0.9620</title></circle>
+<circle cx="687.3" cy="94.1" r="4" fill="#2563eb"><title>OpenAI small 512d / top-k: x=48.00, y=0.9800</title></circle>
+<line x1="741" y1="154" x2="766" y2="154" stroke="#2563eb" stroke-width="3"/>
+<text x="775" y="158" class="legend">OpenAI small 512d / top-k</text>
+<polyline points="143.1,417.2 266.0,241.2 392.9,149.6 482.2,111.0" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-dasharray="7 5"/>
+<circle cx="143.1" cy="417.2" r="4" fill="#60a5fa"><title>OpenAI small 512d / reciprocal: x=8.69, y=0.7120</title></circle>
+<circle cx="266.0" cy="241.2" r="4" fill="#60a5fa"><title>OpenAI small 512d / reciprocal: x=17.57, y=0.8580</title></circle>
+<circle cx="392.9" cy="149.6" r="4" fill="#60a5fa"><title>OpenAI small 512d / reciprocal: x=26.74, y=0.9340</title></circle>
+<circle cx="482.2" cy="111.0" r="4" fill="#60a5fa"><title>OpenAI small 512d / reciprocal: x=33.18, y=0.9660</title></circle>
+<line x1="741" y1="188" x2="766" y2="188" stroke="#60a5fa" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="775" y="192" class="legend">OpenAI small 512d / reciprocal</text>
+<polyline points="200.0,337.7 377.2,176.1 554.4,115.8 687.3,89.3" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+<circle cx="200.0" cy="337.7" r="4" fill="#7c3aed"><title>OpenAI small 1536d / top-k: x=12.80, y=0.7780</title></circle>
+<circle cx="377.2" cy="176.1" r="4" fill="#7c3aed"><title>OpenAI small 1536d / top-k: x=25.60, y=0.9120</title></circle>
+<circle cx="554.4" cy="115.8" r="4" fill="#7c3aed"><title>OpenAI small 1536d / top-k: x=38.40, y=0.9620</title></circle>
+<circle cx="687.3" cy="89.3" r="4" fill="#7c3aed"><title>OpenAI small 1536d / top-k: x=48.00, y=0.9840</title></circle>
+<line x1="741" y1="222" x2="766" y2="222" stroke="#7c3aed" stroke-width="3"/>
+<text x="775" y="226" class="legend">OpenAI small 1536d / top-k</text>
+<polyline points="142.9,398.0 264.1,241.2 390.6,144.8 479.5,108.6" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="7 5"/>
+<circle cx="142.9" cy="398.0" r="4" fill="#a78bfa"><title>OpenAI small 1536d / reciprocal: x=8.67, y=0.7280</title></circle>
+<circle cx="264.1" cy="241.2" r="4" fill="#a78bfa"><title>OpenAI small 1536d / reciprocal: x=17.43, y=0.8580</title></circle>
+<circle cx="390.6" cy="144.8" r="4" fill="#a78bfa"><title>OpenAI small 1536d / reciprocal: x=26.57, y=0.9380</title></circle>
+<circle cx="479.5" cy="108.6" r="4" fill="#a78bfa"><title>OpenAI small 1536d / reciprocal: x=32.99, y=0.9680</title></circle>
+<line x1="741" y1="256" x2="766" y2="256" stroke="#a78bfa" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="775" y="260" class="legend">OpenAI small 1536d / reciprocal</text>
+<polyline points="200.0,243.6 377.2,123.1 554.4,94.1 687.3,82.1" fill="none" stroke="#059669" stroke-width="2.5"/>
+<circle cx="200.0" cy="243.6" r="4" fill="#059669"><title>Gemini 768d / top-k: x=12.80, y=0.8560</title></circle>
+<circle cx="377.2" cy="123.1" r="4" fill="#059669"><title>Gemini 768d / top-k: x=25.60, y=0.9560</title></circle>
+<circle cx="554.4" cy="94.1" r="4" fill="#059669"><title>Gemini 768d / top-k: x=38.40, y=0.9800</title></circle>
+<circle cx="687.3" cy="82.1" r="4" fill="#059669"><title>Gemini 768d / top-k: x=48.00, y=0.9900</title></circle>
+<line x1="741" y1="290" x2="766" y2="290" stroke="#059669" stroke-width="3"/>
+<text x="775" y="294" class="legend">Gemini 768d / top-k</text>
+<polyline points="147.7,332.8 273.8,159.2 404.6,113.4 495.1,89.3" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="7 5"/>
+<circle cx="147.7" cy="332.8" r="4" fill="#34d399"><title>Gemini 768d / reciprocal: x=9.03, y=0.7820</title></circle>
+<circle cx="273.8" cy="159.2" r="4" fill="#34d399"><title>Gemini 768d / reciprocal: x=18.13, y=0.9260</title></circle>
+<circle cx="404.6" cy="113.4" r="4" fill="#34d399"><title>Gemini 768d / reciprocal: x=27.58, y=0.9640</title></circle>
+<circle cx="495.1" cy="89.3" r="4" fill="#34d399"><title>Gemini 768d / reciprocal: x=34.12, y=0.9840</title></circle>
+<line x1="741" y1="324" x2="766" y2="324" stroke="#34d399" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="775" y="328" class="legend">Gemini 768d / reciprocal</text>
+</svg>
